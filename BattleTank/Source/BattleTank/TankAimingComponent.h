@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
@@ -13,7 +15,7 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
