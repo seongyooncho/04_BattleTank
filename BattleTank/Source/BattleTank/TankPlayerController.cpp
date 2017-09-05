@@ -50,7 +50,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 		if (GetLookVectorHitLocation(LookDirection, HitLocation))
 		{
 			auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-			if (!ensure(AimingComponent)) { return; }
+			if (!ensure(AimingComponent)) { return false; }
 			AimingComponent->AimAt(HitLocation);
 		}
 	}
