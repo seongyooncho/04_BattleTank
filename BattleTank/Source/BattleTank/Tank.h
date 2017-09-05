@@ -6,10 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTankBarrel;
-class UTankTurret;
-class AProjectile;
-
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -18,28 +14,4 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank(); 
-
-public:	
-	void AimAt(FVector HitLocation);
-	
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void Fire();
-
-private:
-	virtual void BeginPlay() override;
-
-	// TODO remove once firing is moved to aiming component
-	UPROPERTY(EditAnywhere, Category = "Firing")
-	float LaunchSpeed = 4000;
-
-
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	TSubclassOf<AProjectile> ProjectileBlueprint;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	double ReloadTimeInSeconds = 3;
-
-	UTankBarrel* Barrel = nullptr; // TODO Remove
-
-	double LastFireTime = 0;
 };
