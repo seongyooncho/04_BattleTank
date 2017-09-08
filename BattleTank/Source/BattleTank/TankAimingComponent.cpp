@@ -39,7 +39,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	bool IsReloading = (FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds;
-	if (IsReloading)
+	if (RoundsLeft <= 0)
+	{
+		FiringState = EFiringState::OutOfAmmo;
+	}
+	else if (IsReloading)
 	{
 		FiringState = EFiringState::Reloading;
 	}
@@ -105,7 +109,6 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirectionToSet)
 	{
 		Rotation = Rotation + 360;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Rotation: %f"), Rotation);
 	Turret->Rotate(DeltaRotator.Yaw);
 }
 
@@ -113,7 +116,7 @@ void UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel)) { return; }
 
-	if (FiringState != EFiringState::Reloading)
+	if (FiringState != EFiringState::Reloading && FiringState != EFiringState::OutOfAmmo)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
@@ -122,6 +125,7 @@ void UTankAimingComponent::Fire()
 			);
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
+		RoundsLeft = RoundsLeft - 1;
 	}
 }
 
@@ -137,4 +141,9 @@ bool UTankAimingComponent::IsBarrelMoving()
 EFiringState UTankAimingComponent::GetFiringState() const
 {
 	return FiringState;
+}
+
+int UTankAimingComponent::GetRoundsLeft() const
+{
+	return RoundsLeft;
 }
